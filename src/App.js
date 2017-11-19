@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import {Input} from 'antd';
+import inputView from './editView'
 
 const Search = Input.Search;
 
@@ -21,6 +22,7 @@ class App extends Component {
           style={{ width: 200 }}
           onSearch={value => console.log(value)}
         />
+        <inputView />
       </div>
     );
   }
