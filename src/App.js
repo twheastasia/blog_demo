@@ -4,6 +4,7 @@ import './App.css';
 import {Input, Button} from 'antd';
 const { TextArea } = Input;
 
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -58,6 +59,7 @@ class App extends Component {
         <Button type="primary" loading={this.state.loading} onClick={this.enterLoading}>
           提交
         </Button>
+
       </div>
     );
   }
