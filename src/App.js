@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
+// import store from './Store';
 import {Input, Button} from 'antd';
 const { TextArea } = Input;
 
 
 class App extends Component {
+
   constructor(props){
     super(props);
+    this.appStore = {};
+    this.articleId = 0;
     this.state = {
       loading: false,
       iconLoading: false,
@@ -16,11 +20,13 @@ class App extends Component {
     this.enterIconLoading = this.enterIconLoading.bind(this);
     this.onContentChange = this.onContentChange.bind(this);
     this.onTitleChange = this.onTitleChange.bind(this);
+    this.onSubmitClick = this.onSubmitClick.bind(this);
   }
 
 
   enterLoading = () => {
     this.setState({ loading: true });
+    this.onSubmitClick();
   }
 
   enterIconLoading = () => {
@@ -29,12 +35,16 @@ class App extends Component {
 
   onTitleChange(title){
     this.setState({title: title.target.value});
-    console.log(this.state);
   }
 
   onContentChange(content){
     this.setState({content: content.target.value});
-    console.log(this.state);
+  }
+
+  onSubmitClick(){
+    this.setState({id: this.articleId++});
+    this.appStore = {articles: this.state};
+    console.log(this.appStore);
   }
 
   render() {
