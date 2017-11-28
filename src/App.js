@@ -15,6 +15,7 @@ class App extends Component {
     this.state = {
       loading: false,
       iconLoading: false,
+      id: 0
     };
     this.enterLoading = this.enterLoading.bind(this);
     this.enterIconLoading = this.enterIconLoading.bind(this);
@@ -26,7 +27,6 @@ class App extends Component {
 
   enterLoading = () => {
     this.setState({ loading: true });
-    this.onSubmitClick();
   }
 
   enterIconLoading = () => {
@@ -42,9 +42,13 @@ class App extends Component {
   }
 
   onSubmitClick(){
-    this.setState({id: this.articleId++});
+    this.setState({ loading: true });
+    this.setState({ id: ++this.articleId});
     this.appStore = {articles: this.state};
     console.log(this.appStore);
+    setTimeout(function () {
+      this.setState({ loading: false });
+    }, 2000);
   }
 
   render() {
@@ -66,10 +70,13 @@ class App extends Component {
           <TextArea rows={8} placeholder="正文内容" onChange={this.onContentChange}/>
         </div>
         <br/>
-        <Button type="primary" loading={this.state.loading} onClick={this.enterLoading}>
+        <Button type="primary" loading={this.state.loading} onClick={this.onSubmitClick}>
           提交
         </Button>
-
+        <h3>title: </h3>
+        <h5>{this.state.title}</h5>
+        <h3>content: </h3>
+        <h5>{this.state.content}</h5>
       </div>
     );
   }
