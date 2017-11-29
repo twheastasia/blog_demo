@@ -5,12 +5,27 @@ import './App.css';
 import {Input, Button} from 'antd';
 const { TextArea } = Input;
 
+const TodoItem = ({completed, text}) => {
+  const checkedProp = completed ? {checked: true} : {};
+  return (
+    <li
+      className="todo-item"
+      style={{
+        textDecoration: completed ? 'line-through' : 'none'
+      }}
+    >
+      <input className="toggle" type="checkbox" {...checkedProp} readOnly />
+      <label className="text">{text}</label>
+      <button className="remove" >×</button>
+    </li>
+  )
+}
 
 class App extends Component {
 
   constructor(props){
     super(props);
-    this.appStore = {};
+    this.appStore = [];
     this.articleId = 0;
     this.state = {
       loading: false,
@@ -22,6 +37,9 @@ class App extends Component {
     this.onContentChange = this.onContentChange.bind(this);
     this.onTitleChange = this.onTitleChange.bind(this);
     this.onSubmitClick = this.onSubmitClick.bind(this);
+    this.onTodoItemChange = this.onTodoItemChange.bind(this);
+    this.onAddTodoListClick = this.onAddTodoListClick.bind(this);
+
   }
 
 
@@ -41,14 +59,22 @@ class App extends Component {
     this.setState({content: content.target.value});
   }
 
+  onTodoItemChange(content){
+    this.setState({text: content.target.value});
+    console.log(this.state.text);
+  }
+
   onSubmitClick(){
-    this.setState({ loading: true });
     this.setState({ id: ++this.articleId});
-    this.appStore = {articles: this.state};
+    // this.appStore = {articles: this.state};
+    // console.log(this.appStore);
+
+  }
+
+  onAddTodoListClick(){
+    this.setState({id: ++this.articleId, text: this.state.text, completed: false});
+    this.appStore.push(this.state);
     console.log(this.appStore);
-    setTimeout(function () {
-      this.setState({ loading: false });
-    }, 2000);
   }
 
   render() {
@@ -77,6 +103,22 @@ class App extends Component {
         <h5>{this.state.title}</h5>
         <h3>content: </h3>
         <h5>{this.state.content}</h5>
+
+        <div>
+          <Input style={{width:300}} onChange={this.onTodoItemChange}/>
+          <Button type="primary" onClick={this.onAddTodoListClick}>add to list</Button>
+        </div>
+        <ul>
+        {
+          this.appStore.map((item) => (
+            <TodoItem
+              key={item.id}
+              text={item.text}
+              completed={item.completed}
+            />
+            ))
+        }
+        </ul>
       </div>
     );
   }
