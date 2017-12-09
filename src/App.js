@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-// import store from './Store';
+import app_store from './AppStore';
 import {Input, Button} from 'antd';
 const { TextArea } = Input;
 
-const TodoItem = ({completed, text}) => {
+const TodoItem = ({completed, text, key}) => {
   const checkedProp = completed ? {checked: true} : {};
+
+  function removeItem(){
+    app_store.filter((todoItem) => {
+      return todoItem.id !== key;
+    });
+    console.log(key);
+    console.log(app_store);
+  }
+
   return (
     <li
       className="todo-item"
@@ -16,7 +25,7 @@ const TodoItem = ({completed, text}) => {
     >
       <input className="toggle" type="checkbox" {...checkedProp} readOnly />
       <label className="text">{text}</label>
-      <button className="remove" >×</button>
+      <button className="remove" onClick={removeItem}>×</button>
     </li>
   )
 }
@@ -25,12 +34,12 @@ class App extends Component {
 
   constructor(props){
     super(props);
-    this.appStore = [];
     this.articleId = 0;
     this.state = {
       loading: false,
       iconLoading: false,
-      id: 0
+      id: 0,
+      completed: false
     };
     this.enterLoading = this.enterLoading.bind(this);
     this.enterIconLoading = this.enterIconLoading.bind(this);
@@ -61,7 +70,6 @@ class App extends Component {
 
   onTodoItemChange(content){
     this.setState({text: content.target.value});
-    console.log(this.state.text);
   }
 
   onSubmitClick(){
@@ -73,8 +81,8 @@ class App extends Component {
 
   onAddTodoListClick(){
     this.setState({id: ++this.articleId, text: this.state.text, completed: false});
-    this.appStore.push(this.state);
-    console.log(this.appStore);
+    app_store.push(this.state);
+    console.log(app_store);
   }
 
   render() {
@@ -110,7 +118,7 @@ class App extends Component {
         </div>
         <ul>
         {
-          this.appStore.map((item) => (
+          app_store.map((item) => (
             <TodoItem
               key={item.id}
               text={item.text}

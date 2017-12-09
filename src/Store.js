@@ -1,3 +1,0 @@
-store = {}
-
-export default store;
